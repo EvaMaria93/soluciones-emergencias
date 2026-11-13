@@ -5,7 +5,7 @@ const layout = require('express-ejs-layouts');
 const methodOverride = require('method-override');
 
 const mainRouter = require('./src/routes/main.router');
-
+require('./src/models/db');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
