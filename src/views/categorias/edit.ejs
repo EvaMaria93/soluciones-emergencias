@@ -1,0 +1,13 @@
+<section>
+    <h1>Editar Categoría #<%= categoria.id %></h1>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/categorias/<%= categoria.id %>?_method=PUT" method="POST">
+        <%- include('forms') %>
+        <button type="submit">Actualizar Categoría</button>
+        <a href="/categorias">Cancelar</a>
+    </form>
+</section>

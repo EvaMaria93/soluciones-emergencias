@@ -1,0 +1,12 @@
+<section>
+    <h1>Detalle de Categoría #<%= categoria.id %></h1>
+
+    <p><strong>Nombre:</strong> <%= categoria.name %></p>
+    <p><strong>Descripción:</strong> <%= categoria.description || 'Sin descripción' %></p>
+
+    <p>
+        <a href="/categorias/<%= categoria.id %>/edit">Editar</a> |
+        <a href="/categorias/<%= categoria.id %>/delete">Eliminar</a> |
+        <a href="/categorias">Volver al listado</a>
+    </p>
+</section>

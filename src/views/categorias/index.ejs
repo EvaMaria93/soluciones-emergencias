@@ -1,0 +1,33 @@
+<section>
+    <h1>Categorías de Servicio</h1>
+    <p><a href="/categorias/create">+ Nueva Categoría</a></p>
+
+    <% if (categorias.length === 0) { %>
+        <p>Todavía no hay categorías cargadas.</p>
+    <% } else { %>
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% categorias.forEach(categoria => { %>
+                    <tr>
+                        <td><%= categoria.id %></td>
+                        <td><%= categoria.name %></td>
+                        <td><%= categoria.description || '-' %></td>
+                        <td>
+                            <a href="/categorias/<%= categoria.id %>">Ver</a> |
+                            <a href="/categorias/<%= categoria.id %>/edit">Editar</a> |
+                            <a href="/categorias/<%= categoria.id %>/delete">Eliminar</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</section>

@@ -1,0 +1,9 @@
+<section>
+    <h1>Eliminar Categoría #<%= categoria.id %></h1>
+    <p>¿Estás segura de que querés eliminar la categoría <strong><%= categoria.name %></strong>?</p>
+
+    <form action="/categorias/<%= categoria.id %>?_method=DELETE" method="POST">
+        <button type="submit">Sí, eliminar definitivamente</button>
+        <a href="/categorias">Cancelar</a>
+    </form>
+</section>
