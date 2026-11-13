@@ -1,0 +1,43 @@
+<section>
+    <h1>Solicitudes de Emergencia</h1>
+    <p><a href="/solicitudes/create">+ Nueva Solicitud</a></p>
+
+    <% if (solicitudes.length === 0) { %>
+        <p>Todavía no hay solicitudes registradas.</p>
+    <% } else { %>
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Categoría</th>
+                    <th>Zona</th>
+                    <th>Profesional</th>
+                    <th>Presupuesto</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% solicitudes.forEach(sol => { %>
+                    <tr>
+                        <td>#<%= sol.id %></td>
+                        <td><%= sol.created_at ? new Date(sol.created_at).toLocaleDateString('es-AR') : '-' %></td>
+                        <td><%= sol.user_name %></td>
+                        <td><%= sol.category_name || '-' %></td>
+                        <td><%= sol.zone_name || '-' %></td>
+                        <td><%= sol.professional_name || 'Sin asignar' %></td>
+                        <td><%= sol.budget ? '$' + sol.budget : '-' %></td>
+                        <td><strong><%= sol.status %></strong></td>
+                        <td>
+                            <a href="/solicitudes/<%= sol.id %>">Ver</a> |
+                            <a href="/solicitudes/<%= sol.id %>/edit">Editar</a> |
+                            <a href="/solicitudes/<%= sol.id %>/delete">Eliminar</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</section>

@@ -1,0 +1,74 @@
+<div>
+    <label for="user_id">Cliente que solicita *</label><br>
+    <select id="user_id" name="user_id" required>
+        <option value="">-- Seleccionar cliente --</option>
+        <% usuarios.forEach(u => { %>
+            <option value="<%= u.id %>" <%= String(solicitud.user_id) === String(u.id) ? 'selected' : '' %>>
+                <%= u.name %> (<%= u.phone %>)
+            </option>
+        <% }) %>
+    </select>
+</div>
+<br>
+<div>
+    <label for="category_id">Rubro / Categoría</label><br>
+    <select id="category_id" name="category_id">
+        <option value="">-- Seleccionar categoría --</option>
+        <% categorias.forEach(cat => { %>
+            <option value="<%= cat.id %>" <%= String(solicitud.category_id) === String(cat.id) ? 'selected' : '' %>>
+                <%= cat.name %>
+            </option>
+        <% }) %>
+    </select>
+</div>
+<br>
+<div>
+    <label for="zone_id">Zona</label><br>
+    <select id="zone_id" name="zone_id">
+        <option value="">-- Seleccionar zona --</option>
+        <% zonas.forEach(zona => { %>
+            <option value="<%= zona.id %>" <%= String(solicitud.zone_id) === String(zona.id) ? 'selected' : '' %>>
+                <%= zona.name %>
+            </option>
+        <% }) %>
+    </select>
+</div>
+<br>
+<div>
+    <label for="address">Dirección exacta de la emergencia *</label><br>
+    <input type="text" id="address" name="address" value="<%= solicitud.address || '' %>" required placeholder="Ej: Av. Pavón 5420, Depto 2B">
+</div>
+<br>
+<div>
+    <label for="description">Descripción del problema *</label><br>
+    <textarea id="description" name="description" rows="4" required placeholder="Detallá la urgencia (pérdida de agua, corte eléctrico, cerradura trabada...)"><%= solicitud.description || '' %></textarea>
+</div>
+<br>
+<div>
+    <label for="professional_id">Profesional asignado</label><br>
+    <select id="professional_id" name="professional_id">
+        <option value="">-- Sin asignar todavía --</option>
+        <% profesionales.forEach(prof => { %>
+            <option value="<%= prof.id %>" <%= String(solicitud.professional_id) === String(prof.id) ? 'selected' : '' %>>
+                <%= prof.name %> — <%= prof.category_name || 'General' %> (<%= prof.zone_name || 'Sin zona' %>)
+            </option>
+        <% }) %>
+    </select>
+</div>
+<br>
+<div>
+    <label for="budget">Presupuesto estimado ($)</label><br>
+    <input type="number" step="0.01" min="0" id="budget" name="budget" value="<%= solicitud.budget || '' %>" placeholder="Ej: 25000.00">
+</div>
+<br>
+<div>
+    <label for="status">Estado de la solicitud</label><br>
+    <select id="status" name="status">
+        <option value="pendiente" <%= solicitud.status === 'pendiente' ? 'selected' : '' %>>Pendiente</option>
+        <option value="asignada" <%= solicitud.status === 'asignada' ? 'selected' : '' %>>Asignada</option>
+        <option value="en_proceso" <%= solicitud.status === 'en_proceso' ? 'selected' : '' %>>En proceso</option>
+        <option value="finalizada" <%= solicitud.status === 'finalizada' ? 'selected' : '' %>>Finalizada</option>
+        <option value="cancelada" <%= solicitud.status === 'cancelada' ? 'selected' : '' %>>Cancelada</option>
+    </select>
+</div>
+<br>

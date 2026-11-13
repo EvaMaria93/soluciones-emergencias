@@ -1,0 +1,13 @@
+<section>
+    <h1>Editar Solicitud #<%= solicitud.id %></h1>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/solicitudes/<%= solicitud.id %>?_method=PUT" method="POST">
+        <%- include('forms') %>
+        <button type="submit">Actualizar Solicitud</button>
+        <a href="/solicitudes">Cancelar</a>
+    </form>
+</section>

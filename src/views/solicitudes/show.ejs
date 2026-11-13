@@ -1,0 +1,21 @@
+<section>
+    <h1>Detalle de Solicitud #<%= solicitud.id %></h1>
+
+    <p><strong>Estado:</strong> <%= solicitud.status %></p>
+    <p><strong>Fecha de creación:</strong> <%= solicitud.created_at ? new Date(solicitud.created_at).toLocaleString('es-AR') : '-' %></p>
+    <hr>
+    <p><strong>Cliente:</strong> <%= solicitud.user_name %> (Tel: <%= solicitud.user_phone %> | Email: <%= solicitud.user_email %>)</p>
+    <p><strong>Dirección:</strong> <%= solicitud.address %></p>
+    <p><strong>Zona:</strong> <%= solicitud.zone_name || 'Sin asignar' %></p>
+    <p><strong>Categoría:</strong> <%= solicitud.category_name || 'Sin asignar' %></p>
+    <p><strong>Descripción del problema:</strong> <%= solicitud.description %></p>
+    <hr>
+    <p><strong>Profesional asignado:</strong> <%= solicitud.professional_name ? `${solicitud.professional_name} (Tel: ${solicitud.professional_phone})` : 'Pendiente de asignación' %></p>
+    <p><strong>Presupuesto:</strong> <%= solicitud.budget ? '$' + solicitud.budget : 'A definir' %></p>
+
+    <p>
+        <a href="/solicitudes/<%= solicitud.id %>/edit">Editar / Asignar técnico</a> |
+        <a href="/solicitudes/<%= solicitud.id %>/delete">Eliminar</a> |
+        <a href="/solicitudes">Volver al listado</a>
+    </p>
+</section>

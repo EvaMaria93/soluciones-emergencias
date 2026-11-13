@@ -12,7 +12,7 @@ const zonasRouter = require('./src/routes/zonas.router');
 const categoriasRouter = require('./src/routes/categorias.router');
 const usuariosRouter = require('./src/routes/usuarios.router');
 const profesionalesRouter = require('./src/routes/profesionales.router');
-
+const solicitudesRouter = require('./src/routes/solicitudes.router');
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
@@ -29,6 +29,8 @@ app.use('/zonas', zonasRouter);
 app.use('/categorias', categoriasRouter);
 app.use('/usuarios', usuariosRouter);
 app.use('/profesionales', profesionalesRouter);
+app.use('/solicitudes', solicitudesRouter);
+
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);

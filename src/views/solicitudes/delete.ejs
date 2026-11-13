@@ -1,0 +1,9 @@
+<section>
+    <h1>Eliminar Solicitud #<%= solicitud.id %></h1>
+    <p>¿Estás segura de que querés eliminar la solicitud de <strong><%= solicitud.user_name %></strong> en <strong><%= solicitud.address %></strong>?</p>
+
+    <form action="/solicitudes/<%= solicitud.id %>?_method=DELETE" method="POST">
+        <button type="submit">Sí, eliminar definitivamente</button>
+        <a href="/solicitudes">Cancelar</a>
+    </form>
+</section>

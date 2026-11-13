@@ -1,0 +1,13 @@
+<section>
+    <h1>Nueva Solicitud de Emergencia</h1>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/solicitudes" method="POST">
+        <%- include('forms') %>
+        <button type="submit">Registrar Solicitud</button>
+        <a href="/solicitudes">Cancelar</a>
+    </form>
+</section>
