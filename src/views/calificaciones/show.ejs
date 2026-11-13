@@ -1,0 +1,16 @@
+<section>
+    <h1>Detalle de Calificación #<%= calificacion.id %></h1>
+
+    <p><strong>Solicitud:</strong> <a href="/solicitudes/<%= calificacion.request_id %>">#<%= calificacion.request_id %></a> — <%= calificacion.request_description %></p>
+    <p><strong>Cliente:</strong> <%= calificacion.user_name %></p>
+    <p><strong>Profesional evaluado:</strong> <%= calificacion.professional_name || 'Sin asignar' %> (<%= calificacion.category_name || 'General' %>)</p>
+    <p><strong>Puntuación:</strong> <%= calificacion.score %> / 5</p>
+    <p><strong>Comentario:</strong> <%= calificacion.comment || 'Sin comentarios' %></p>
+    <p><strong>Fecha:</strong> <%= calificacion.date ? new Date(calificacion.date).toLocaleString('es-AR') : '-' %></p>
+
+    <p>
+        <a href="/calificaciones/<%= calificacion.id %>/edit">Editar</a> |
+        <a href="/calificaciones/<%= calificacion.id %>/delete">Eliminar</a> |
+        <a href="/calificaciones">Volver al listado</a>
+    </p>
+</section>

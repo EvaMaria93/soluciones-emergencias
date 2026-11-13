@@ -1,0 +1,28 @@
+<div>
+    <label for="request_id">Solicitud atendida *</label><br>
+    <select id="request_id" name="request_id" required>
+        <option value="">-- Seleccionar solicitud --</option>
+        <% solicitudes.forEach(sol => { %>
+            <option value="<%= sol.id %>" <%= String(calificacion.request_id) === String(sol.id) ? 'selected' : '' %>>
+                #<%= sol.id %> — <%= sol.user_name %> (<%= sol.category_name || 'Sin rubro' %> | Prof: <%= sol.professional_name || 'Sin asignar' %>)
+            </option>
+        <% }) %>
+    </select>
+</div>
+<br>
+<div>
+    <label for="score">Puntuación (1 a 5 estrellas) *</label><br>
+    <select id="score" name="score" required>
+        <option value="5" <%= Number(calificacion.score) === 5 ? 'selected' : '' %>>5 - Excelente</option>
+        <option value="4" <%= Number(calificacion.score) === 4 ? 'selected' : '' %>>4 - Muy bueno</option>
+        <option value="3" <%= Number(calificacion.score) === 3 ? 'selected' : '' %>>3 - Aceptable</option>
+        <option value="2" <%= Number(calificacion.score) === 2 ? 'selected' : '' %>>2 - Regular</option>
+        <option value="1" <%= Number(calificacion.score) === 1 ? 'selected' : '' %>>1 - Malo</option>
+    </select>
+</div>
+<br>
+<div>
+    <label for="comment">Comentario del cliente</label><br>
+    <textarea id="comment" name="comment" rows="3" maxlength="500" placeholder="Opinión sobre la rapidez y calidad del trabajo"><%= calificacion.comment || '' %></textarea>
+</div>
+<br>
