@@ -1,0 +1,9 @@
+<section>
+    <h1>Eliminar Profesional #<%= profesional.id %></h1>
+    <p>¿Estás segura de que querés eliminar a <strong><%= profesional.name %></strong>?</p>
+
+    <form action="/profesionales/<%= profesional.id %>?_method=DELETE" method="POST">
+        <button type="submit">Sí, eliminar definitivamente</button>
+        <a href="/profesionales">Cancelar</a>
+    </form>
+</section>

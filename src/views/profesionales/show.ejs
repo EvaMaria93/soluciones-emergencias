@@ -1,0 +1,17 @@
+<section>
+    <h1>Detalle de Profesional #<%= profesional.id %></h1>
+
+    <p><strong>Nombre:</strong> <%= profesional.name %></p>
+    <p><strong>Especialidad:</strong> <%= profesional.category_name || 'Sin asignar' %></p>
+    <p><strong>Zona de cobertura:</strong> <%= profesional.zone_name || 'Sin asignar' %></p>
+    <p><strong>Teléfono:</strong> <%= profesional.phone %></p>
+    <p><strong>Email:</strong> <%= profesional.email || 'Sin registrar' %></p>
+    <p><strong>Matrícula:</strong> <%= profesional.license || 'No aplica / Sin matrícula' %></p>
+    <p><strong>Estado:</strong> <%= profesional.available ? 'Disponible' : 'No disponible' %></p>
+
+    <p>
+        <a href="/profesionales/<%= profesional.id %>/edit">Editar</a> |
+        <a href="/profesionales/<%= profesional.id %>/delete">Eliminar</a> |
+        <a href="/profesionales">Volver al listado</a>
+    </p>
+</section>

@@ -1,0 +1,51 @@
+<div>
+    <label for="name">Nombre completo *</label><br>
+    <input type="text" id="name" name="name" value="<%= profesional.name || '' %>" required placeholder="Ej: Carlos Gómez">
+</div>
+<br>
+<div>
+    <label for="phone">Teléfono *</label><br>
+    <input type="tel" id="phone" name="phone" value="<%= profesional.phone || '' %>" required placeholder="Ej: 11 5555-1234">
+</div>
+<br>
+<div>
+    <label for="email">Correo electrónico</label><br>
+    <input type="email" id="email" name="email" value="<%= profesional.email || '' %>" placeholder="tecnico@email.com">
+</div>
+<br>
+<div>
+    <label for="license">Matrícula profesional</label><br>
+    <input type="text" id="license" name="license" value="<%= profesional.license || '' %>" placeholder="Ej: MAT-45892">
+</div>
+<br>
+<div>
+    <label for="category_id">Especialidad (Categoría)</label><br>
+    <select id="category_id" name="category_id">
+        <option value="">-- Seleccionar categoría --</option>
+        <% categorias.forEach(cat => { %>
+            <option value="<%= cat.id %>" <%= String(profesional.category_id) === String(cat.id) ? 'selected' : '' %>>
+                <%= cat.name %>
+            </option>
+        <% }) %>
+    </select>
+</div>
+<br>
+<div>
+    <label for="zone_id">Zona de cobertura</label><br>
+    <select id="zone_id" name="zone_id">
+        <option value="">-- Seleccionar zona --</option>
+        <% zonas.forEach(zona => { %>
+            <option value="<%= zona.id %>" <%= String(profesional.zone_id) === String(zona.id) ? 'selected' : '' %>>
+                <%= zona.name %>
+            </option>
+        <% }) %>
+    </select>
+</div>
+<br>
+<div>
+    <label for="available">
+        <input type="checkbox" id="available" name="available" value="1" <%= profesional.available ? 'checked' : '' %>>
+        Disponible para tomar emergencias
+    </label>
+</div>
+<br>

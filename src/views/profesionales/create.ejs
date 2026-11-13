@@ -1,0 +1,13 @@
+<section>
+    <h1>Nuevo Profesional</h1>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/profesionales" method="POST">
+        <%- include('forms') %>
+        <button type="submit">Guardar Profesional</button>
+        <a href="/profesionales">Cancelar</a>
+    </form>
+</section>

@@ -1,0 +1,39 @@
+<section>
+    <h1>Profesionales y Técnicos</h1>
+    <p><a href="/profesionales/create">+ Nuevo Profesional</a></p>
+
+    <% if (profesionales.length === 0) { %>
+        <p>Todavía no hay profesionales cargados.</p>
+    <% } else { %>
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Especialidad</th>
+                    <th>Zona</th>
+                    <th>Teléfono</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% profesionales.forEach(prof => { %>
+                    <tr>
+                        <td><%= prof.id %></td>
+                        <td><%= prof.name %></td>
+                        <td><%= prof.category_name || 'Sin asignar' %></td>
+                        <td><%= prof.zone_name || 'Sin asignar' %></td>
+                        <td><%= prof.phone %></td>
+                        <td><%= prof.available ? 'Disponible' : 'Ocupado' %></td>
+                        <td>
+                            <a href="/profesionales/<%= prof.id %>">Ver</a> |
+                            <a href="/profesionales/<%= prof.id %>/edit">Editar</a> |
+                            <a href="/profesionales/<%= prof.id %>/delete">Eliminar</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</section>

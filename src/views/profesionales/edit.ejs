@@ -1,0 +1,13 @@
+<section>
+    <h1>Editar Profesional #<%= profesional.id %></h1>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/profesionales/<%= profesional.id %>?_method=PUT" method="POST">
+        <%- include('forms') %>
+        <button type="submit">Actualizar Profesional</button>
+        <a href="/profesionales">Cancelar</a>
+    </form>
+</section>
