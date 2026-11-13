@@ -1,0 +1,9 @@
+<section>
+    <h1>Eliminar Cliente #<%= usuario.id %></h1>
+    <p>¿Estás segura de que querés eliminar al cliente <strong><%= usuario.name %></strong> (<%= usuario.email %>)?</p>
+
+    <form action="/usuarios/<%= usuario.id %>?_method=DELETE" method="POST">
+        <button type="submit">Sí, eliminar definitivamente</button>
+        <a href="/usuarios">Cancelar</a>
+    </form>
+</section>

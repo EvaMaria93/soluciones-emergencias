@@ -1,0 +1,14 @@
+<section>
+    <h1>Detalle de Cliente #<%= usuario.id %></h1>
+
+    <p><strong>Nombre:</strong> <%= usuario.name %></p>
+    <p><strong>Email:</strong> <%= usuario.email %></p>
+    <p><strong>Teléfono:</strong> <%= usuario.phone %></p>
+    <p><strong>Dirección:</strong> <%= usuario.address || 'Sin dirección registrada' %></p>
+
+    <p>
+        <a href="/usuarios/<%= usuario.id %>/edit">Editar</a> |
+        <a href="/usuarios/<%= usuario.id %>/delete">Eliminar</a> |
+        <a href="/usuarios">Volver al listado</a>
+    </p>
+</section>

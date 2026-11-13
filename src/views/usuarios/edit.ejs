@@ -1,0 +1,13 @@
+<section>
+    <h1>Editar Cliente #<%= usuario.id %></h1>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/usuarios/<%= usuario.id %>?_method=PUT" method="POST">
+        <%- include('forms') %>
+        <button type="submit">Actualizar Cliente</button>
+        <a href="/usuarios">Cancelar</a>
+    </form>
+</section>

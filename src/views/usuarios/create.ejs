@@ -1,0 +1,13 @@
+<section>
+    <h1>Nuevo Cliente</h1>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/usuarios" method="POST">
+        <%- include('forms') %>
+        <button type="submit">Guardar Cliente</button>
+        <a href="/usuarios">Cancelar</a>
+    </form>
+</section>

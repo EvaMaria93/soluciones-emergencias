@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const zonasRouter = require('./src/routes/zonas.router');
 const categoriasRouter = require('./src/routes/categorias.router');
-
+const usuariosRouter = require('./src/routes/usuarios.router');
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
@@ -25,6 +25,8 @@ app.use(methodOverride('_method'));
 app.use('/', mainRouter);
 app.use('/zonas', zonasRouter);
 app.use('/categorias', categoriasRouter);
+app.use('/usuarios', usuariosRouter);
+
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
