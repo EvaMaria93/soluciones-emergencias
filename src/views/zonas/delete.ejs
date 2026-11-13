@@ -1,0 +1,9 @@
+<section>
+    <h1>Eliminar Zona #<%= zona.id %></h1>
+    <p>¿Estás segura de que querés eliminar la zona <strong><%= zona.name %></strong>?</p>
+
+    <form action="/zonas/<%= zona.id %>?_method=DELETE" method="POST">
+        <button type="submit">Sí, eliminar definitivamente</button>
+        <a href="/zonas">Cancelar</a>
+    </form>
+</section>

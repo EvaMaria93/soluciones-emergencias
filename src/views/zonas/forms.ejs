@@ -1,0 +1,10 @@
+<div>
+    <label for="name">Nombre de la zona *</label><br>
+    <input type="text" id="name" name="name" value="<%= zona.name || '' %>" required placeholder="Ej: Lanús Oeste">
+</div>
+<br>
+<div>
+    <label for="description">Descripción</label><br>
+    <textarea id="description" name="description" rows="3" placeholder="Barrios o alcance de cobertura"><%= zona.description || '' %></textarea>
+</div>
+<br>

@@ -1,0 +1,13 @@
+<section>
+    <h1>Editar Zona #<%= zona.id %></h1>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/zonas/<%= zona.id %>?_method=PUT" method="POST">
+        <%- include('forms') %>
+        <button type="submit">Actualizar Zona</button>
+        <a href="/zonas">Cancelar</a>
+    </form>
+</section>

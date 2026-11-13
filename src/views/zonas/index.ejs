@@ -1,0 +1,33 @@
+<section>
+    <h1>Zonas de Cobertura</h1>
+    <p><a href="/zonas/create">+ Nueva Zona</a></p>
+
+    <% if (zonas.length === 0) { %>
+        <p>Todavía no hay zonas cargadas.</p>
+    <% } else { %>
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% zonas.forEach(zona => { %>
+                    <tr>
+                        <td><%= zona.id %></td>
+                        <td><%= zona.name %></td>
+                        <td><%= zona.description || '-' %></td>
+                        <td>
+                            <a href="/zonas/<%= zona.id %>">Ver</a> |
+                            <a href="/zonas/<%= zona.id %>/edit">Editar</a> |
+                            <a href="/zonas/<%= zona.id %>/delete">Eliminar</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</section>

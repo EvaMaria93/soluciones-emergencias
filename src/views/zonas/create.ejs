@@ -1,0 +1,13 @@
+<section>
+    <h1>Nueva Zona</h1>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/zonas" method="POST">
+        <%- include('forms') %>
+        <button type="submit">Guardar Zona</button>
+        <a href="/zonas">Cancelar</a>
+    </form>
+</section>
