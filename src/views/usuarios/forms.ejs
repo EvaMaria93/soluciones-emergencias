@@ -1,20 +1,20 @@
 <div>
     <label for="name">Nombre completo *</label><br>
-    <input type="text" id="name" name="name" value="<%= usuario.name || '' %>" required placeholder="Ej: Juan Pérez">
+    <input type="text" id="name" name="name" minlength="2" maxlength="100" value="<%= usuario.name || '' %>" required placeholder="Ej: Juan Pérez">
 </div>
 <br>
 <div>
     <label for="email">Correo electrónico *</label><br>
-    <input type="email" id="email" name="email" value="<%= usuario.email || '' %>" required placeholder="cliente@email.com">
+    <input type="email" id="email" name="email" maxlength="120" value="<%= usuario.email || '' %>" required placeholder="cliente@email.com">
 </div>
 <br>
 <div>
     <label for="phone">Teléfono *</label><br>
-    <input type="tel" id="phone" name="phone" value="<%= usuario.phone || '' %>" required placeholder="Ej: 11 4567-8900">
+    <input type="tel" id="phone" name="phone" inputmode="tel" pattern="[0-9+()\s\-]{8,30}" title="Solo números, espacios, + y guiones (entre 8 y 15 dígitos)" value="<%= usuario.phone || '' %>" required placeholder="Ej: 11 4567-8900">
 </div>
 <br>
 <div>
     <label for="address">Dirección habitual</label><br>
-    <input type="text" id="address" name="address" value="<%= usuario.address || '' %>" placeholder="Ej: Av. Hipólito Yrigoyen 6200, Remedios de Escalada">
+    <input type="text" id="address" name="address" minlength="5" maxlength="200" value="<%= usuario.address || '' %>" placeholder="Ej: Av. Hipólito Yrigoyen 6200, Remedios de Escalada">
 </div>
 <br>

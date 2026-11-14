@@ -11,8 +11,8 @@
 </div>
 <br>
 <div>
-    <label for="category_id">Rubro / Categoría</label><br>
-    <select id="category_id" name="category_id">
+    <label for="category_id">Rubro / Categoría *</label><br>
+    <select id="category_id" name="category_id" required>
         <option value="">-- Seleccionar categoría --</option>
         <% categorias.forEach(cat => { %>
             <option value="<%= cat.id %>" <%= String(solicitud.category_id) === String(cat.id) ? 'selected' : '' %>>
@@ -23,8 +23,8 @@
 </div>
 <br>
 <div>
-    <label for="zone_id">Zona</label><br>
-    <select id="zone_id" name="zone_id">
+    <label for="zone_id">Zona *</label><br>
+    <select id="zone_id" name="zone_id" required>
         <option value="">-- Seleccionar zona --</option>
         <% zonas.forEach(zona => { %>
             <option value="<%= zona.id %>" <%= String(solicitud.zone_id) === String(zona.id) ? 'selected' : '' %>>
@@ -36,12 +36,12 @@
 <br>
 <div>
     <label for="address">Dirección exacta de la emergencia *</label><br>
-    <input type="text" id="address" name="address" value="<%= solicitud.address || '' %>" required placeholder="Ej: Av. Pavón 5420, Depto 2B">
+    <input type="text" id="address" name="address" minlength="5" maxlength="200" value="<%= solicitud.address || '' %>" required placeholder="Ej: Av. Pavón 5420, Depto 2B">
 </div>
 <br>
 <div>
     <label for="description">Descripción del problema *</label><br>
-    <textarea id="description" name="description" rows="4" required placeholder="Detallá la urgencia (pérdida de agua, corte eléctrico, cerradura trabada...)"><%= solicitud.description || '' %></textarea>
+    <textarea id="description" name="description" rows="4" minlength="10" maxlength="2000" required placeholder="Detallá la urgencia (pérdida de agua, corte eléctrico, cerradura trabada...)"><%= solicitud.description || '' %></textarea>
 </div>
 <br>
 <div>
@@ -58,13 +58,14 @@
 <br>
 <div>
     <label for="budget">Presupuesto estimado ($)</label><br>
-    <input type="number" step="0.01" min="0" id="budget" name="budget" value="<%= solicitud.budget || '' %>" placeholder="Ej: 25000.00">
+    <input type="number" step="0.01" min="0" max="99999999.99" id="budget" name="budget" value="<%= solicitud.budget || '' %>" placeholder="Ej: 25000.00">
 </div>
 <br>
 <div>
     <label for="status">Estado de la solicitud</label><br>
     <select id="status" name="status">
         <option value="pendiente" <%= solicitud.status === 'pendiente' ? 'selected' : '' %>>Pendiente</option>
+        <option value="presupuestada" <%= solicitud.status === 'presupuestada' ? 'selected' : '' %>>Presupuestada</option>
         <option value="asignada" <%= solicitud.status === 'asignada' ? 'selected' : '' %>>Asignada</option>
         <option value="en_proceso" <%= solicitud.status === 'en_proceso' ? 'selected' : '' %>>En proceso</option>
         <option value="finalizada" <%= solicitud.status === 'finalizada' ? 'selected' : '' %>>Finalizada</option>
