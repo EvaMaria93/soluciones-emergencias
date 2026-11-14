@@ -1,0 +1,9 @@
+<section>
+    <h1>Eliminar Calificación #<%= calificacion.id %></h1>
+    <p>¿Estás segura de que querés eliminar la calificación de la solicitud <strong>#<%= calificacion.request_id %></strong>?</p>
+
+    <form action="/calificaciones/<%= calificacion.id %>?_method=DELETE" method="POST">
+        <button type="submit">Sí, eliminar definitivamente</button>
+        <a href="/calificaciones">Cancelar</a>
+    </form>
+</section>

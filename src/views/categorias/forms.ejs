@@ -1,10 +1,10 @@
 <div>
     <label for="name">Nombre de la categoría *</label><br>
-    <input type="text" id="name" name="name" value="<%= categoria.name || '' %>" required placeholder="Ej: Plomería, Electricidad, Cerrajería">
+    <input type="text" id="name" name="name" minlength="3" maxlength="100" value="<%= categoria.name || '' %>" required placeholder="Ej: Plomería, Electricidad, Cerrajería">
 </div>
 <br>
 <div>
     <label for="description">Descripción</label><br>
-    <textarea id="description" name="description" rows="3" placeholder="Tipo de urgencias que cubre"><%= categoria.description || '' %></textarea>
+    <textarea id="description" name="description" rows="3" maxlength="255" placeholder="Tipo de urgencias que cubre"><%= categoria.description || '' %></textarea>
 </div>
 <br>

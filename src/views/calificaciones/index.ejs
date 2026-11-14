@@ -1,0 +1,41 @@
+<section>
+    <h1>Calificaciones de Servicios</h1>
+    <p><a href="/calificaciones/create">+ Nueva Calificación</a></p>
+
+    <% if (calificaciones.length === 0) { %>
+        <p>Todavía no hay calificaciones cargadas.</p>
+    <% } else { %>
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Solicitud</th>
+                    <th>Cliente</th>
+                    <th>Profesional</th>
+                    <th>Puntuación</th>
+                    <th>Comentario</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% calificaciones.forEach(cal => { %>
+                    <tr>
+                        <td><%= cal.id %></td>
+                        <td><a href="/solicitudes/<%= cal.request_id %>">#<%= cal.request_id %></a> (<%= cal.category_name || '-' %>)</td>
+                        <td><%= cal.user_name %></td>
+                        <td><%= cal.professional_name || 'Sin asignar' %></td>
+                        <td><strong><%= cal.score %> / 5</strong></td>
+                        <td><%= cal.comment || '-' %></td>
+                        <td><%= cal.date ? new Date(cal.date).toLocaleDateString('es-AR') : '-' %></td>
+                        <td>
+                            <a href="/calificaciones/<%= cal.id %>">Ver</a> |
+                            <a href="/calificaciones/<%= cal.id %>/edit">Editar</a> |
+                            <a href="/calificaciones/<%= cal.id %>/delete">Eliminar</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</section>

@@ -1,0 +1,13 @@
+<section>
+    <h1>Nueva Calificación</h1>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/calificaciones" method="POST">
+        <%- include('forms') %>
+        <button type="submit">Guardar Calificación</button>
+        <a href="/calificaciones">Cancelar</a>
+    </form>
+</section>

@@ -1,0 +1,13 @@
+<section>
+    <h1>Editar Calificación #<%= calificacion.id %></h1>
+
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <form action="/calificaciones/<%= calificacion.id %>?_method=PUT" method="POST">
+        <%- include('forms') %>
+        <button type="submit">Actualizar Calificación</button>
+        <a href="/calificaciones">Cancelar</a>
+    </form>
+</section>
