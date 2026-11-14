@@ -4,17 +4,19 @@
   "description": "Proyecto Backend.CRUD",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "crear-admin": "node scripts/crear-admin.js"
   },
   "author": "Villarreal Eva Maria",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "dotenv": "^18.0.10",
     "ejs": "^7.0.2",
     "express": "^5.3.0",
     "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.19.0",
     "method-override": "^3.0.0",
     "mysql2": "^3.24.6",
     "nodemailer": "^10.5.0"

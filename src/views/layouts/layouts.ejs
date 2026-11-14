@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <%# El menú solo se muestra si hay un administrador con sesión iniciada (variable "admin") %>
+    <% if (locals.admin) { %>
     <header>
         <nav>
             <a href="/">Inicio</a>
@@ -17,7 +19,12 @@
             <a href="/solicitudes">Solicitudes</a>
             <a href="/calificaciones">Calificaciones</a>
         </nav>
+        <form action="/logout" method="POST">
+            <span>Sesión: <%= admin.name %></span>
+            <button type="submit">Cerrar sesión</button>
+        </form>
     </header>
+    <% } %>
     <main>
         <%- body %>
     </main>
