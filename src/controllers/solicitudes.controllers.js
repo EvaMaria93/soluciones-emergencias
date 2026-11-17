@@ -5,6 +5,7 @@ const Zona = require('../models/zona.model');
 const Profesional = require('../models/profesional.model');
 const { badRequest, notFound, serverError } = require('../helpers/errores');
 const { validarDireccion, validarTexto } = require('../helpers/validaciones');
+const Mail = require('../services/mail.service');
 
 // Estados permitidos (los mismos que ofrece el formulario). Si llega otro valor, se rechaza.
 // Flujo normal: pendiente -> presupuestada -> asignada -> en_proceso -> finalizada (o cancelada)
@@ -118,7 +119,7 @@ const store = async (req, res) => {
     }
 
     try {
-        await Solicitud.create({
+        const nuevoId = await Solicitud.create({
             user_id,
             category_id,
             zone_id,
@@ -129,6 +130,10 @@ const store = async (req, res) => {
             status
         });
         res.redirect('/solicitudes');
+
+        // El aviso por mail se manda DESPUÉS de responder y sin "await": no demora la pantalla
+        // y, si el correo falla, la solicitud igual quedó guardada.
+        Mail.avisarNuevaSolicitud(nuevoId, req.session.admin.email);
     } catch (error) {
         if (error.code === 'ER_NO_REFERENCED_ROW_2') {
             return badRequest(res, 'El cliente, la categoría, la zona o el profesional elegido no existe.', '/solicitudes', 'Volver a solicitudes');
@@ -186,6 +191,9 @@ const update = async (req, res) => {
     }
 
     try {
+        // Guardamos cómo estaba antes para saber si el estado CAMBIÓ (y recién ahí avisar)
+        const anterior = await Solicitud.getById(id);
+
         const filas = await Solicitud.update(id, {
             user_id,
             category_id,
@@ -201,6 +209,15 @@ const update = async (req, res) => {
             return notFound(res, 'Solicitud no encontrada', '/solicitudes', 'Volver a solicitudes');
         }
         res.redirect('/solicitudes');
+
+        // Avisos por mail según el nuevo estado (solo si el estado cambió)
+        if (anterior && anterior.status !== status) {
+            if (status === 'presupuestada') {
+                Mail.avisarPresupuesto(id, req.session.admin.email); // -> cliente
+            } else if (status === 'asignada') {
+                Mail.avisarAsignacion(id); // -> profesional
+            }
+        }
     } catch (error) {
         if (error.code === 'ER_NO_REFERENCED_ROW_2') {
             return badRequest(res, 'El cliente, la categoría, la zona o el profesional elegido no existe.', '/solicitudes', 'Volver a solicitudes');

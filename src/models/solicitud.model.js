@@ -47,7 +47,8 @@ const getById = async (id) => {
             c.nombre AS category_name,
             z.nombre AS zone_name,
             p.nombre AS professional_name,
-            p.telefono AS professional_phone
+            p.telefono AS professional_phone,
+            p.email AS professional_email
         FROM solicitudes s
         INNER JOIN usuarios u ON s.usuario_id = u.id
         LEFT JOIN categorias c ON s.categoria_id = c.id
@@ -61,8 +62,8 @@ const getById = async (id) => {
 const create = async ({ user_id, category_id, zone_id, professional_id, description, address, budget, status }) => {
     const [result] = await db.query(
         `INSERT INTO solicitudes 
-         (usuario_id, categoria_id, zona_id, profesional_id, descripcion, direccion, presupuesto, estado)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        (usuario_id, categoria_id, zona_id, profesional_id, descripcion, direccion, presupuesto, estado)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
             user_id,
             category_id || null,
@@ -80,9 +81,9 @@ const create = async ({ user_id, category_id, zone_id, professional_id, descript
 const update = async (id, { user_id, category_id, zone_id, professional_id, description, address, budget, status }) => {
     const [result] = await db.query(
         `UPDATE solicitudes 
-         SET usuario_id = ?, categoria_id = ?, zona_id = ?, profesional_id = ?, 
-             descripcion = ?, direccion = ?, presupuesto = ?, estado = ?
-         WHERE id = ?`,
+        SET usuario_id = ?, categoria_id = ?, zona_id = ?, profesional_id = ?, 
+        descripcion = ?, direccion = ?, presupuesto = ?, estado = ?
+        WHERE id = ?`,
         [
             user_id,
             category_id || null,
