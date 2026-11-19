@@ -28,8 +28,8 @@
                         <td><%= sol.category_name || '-' %></td>
                         <td><%= sol.zone_name || '-' %></td>
                         <td><%= sol.professional_name || 'Sin asignar' %></td>
-                        <td><%= sol.budget ? '$' + sol.budget : '-' %></td>
-                        <td><strong><%= sol.status %></strong></td>
+                        <td><%= sol.budget !== null && sol.budget !== undefined ? '$ ' + Number(sol.budget).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-' %></td>
+                        <td><span class="estado estado--<%= sol.status %>"><%= sol.status.replace('_', ' ') %></span></td>
                         <td>
                             <a href="/solicitudes/<%= sol.id %>">Ver</a> |
                             <a href="/solicitudes/<%= sol.id %>/edit">Editar</a> |

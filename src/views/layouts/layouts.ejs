@@ -3,30 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicios de emergencia</title>
+    <title>Manos a la obra ADMIN</title>
+    <%# El ícono que aparece en la pestaña del navegador %>
+    <link rel="icon" type="image/svg+xml" href="/img/logo.svg">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
-    <%# El menú solo se muestra si hay un administrador con sesión iniciada (variable "admin") %>
+<%# La clase del body cambia según haya o no sesión iniciada: así el CSS puede darle
+    otro aspecto a la pantalla de login (sin menú, con la tarjeta centrada). %>
+<body class="<%= locals.admin ? 'con-sesion' : 'sin-sesion' %>">
+
     <% if (locals.admin) { %>
-    <header>
-        <nav>
+    <header class="barra">
+        <div class="barra__fila">
+            <a class="marca" href="/">
+                <img src="/img/logo.svg" alt="" width="38" height="38">
+                <span class="marca__texto">Manos a la Obra <small>ADMIN</small></span>
+            </a>
+
+            <form class="sesion" action="/logout" method="POST">
+                <span class="sesion__nombre"><%= admin.name %></span>
+                <button type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+
+        <nav class="menu" aria-label="Navegación principal">
             <a href="/">Inicio</a>
-            <a href="/zonas">Zonas</a>
-            <a href="/categorias">Categorías</a>
-            <a href="/usuarios">Usuarios</a>
-            <a href="/profesionales">Profesionales</a>
             <a href="/solicitudes">Solicitudes</a>
+            <a href="/profesionales">Profesionales</a>
+            <a href="/usuarios">Clientes</a>
+            <a href="/categorias">Categorías</a>
+            <a href="/zonas">Zonas</a>
             <a href="/calificaciones">Calificaciones</a>
         </nav>
-        <form action="/logout" method="POST">
-            <span>Sesión: <%= admin.name %></span>
-            <button type="submit">Cerrar sesión</button>
-        </form>
     </header>
+    <% } else { %>
+    <%# Sin sesión (pantalla de login): solo la marca, centrada %>
+    <div class="marca-centro">
+        <img src="/img/logo.svg" alt="" width="64" height="64">
+        <strong>Soluciones de Emergencia</strong>
+    </div>
     <% } %>
-    <main>
+
+    <main class="contenedor">
         <%- body %>
     </main>
+
+    <script>
+        // Tres detalles que se resuelven con un poquito de JavaScript:
+
+        // 1) Marcar en el menú la sección en la que estamos (le agrega la clase "activo")
+        document.querySelectorAll('.menu a').forEach(function (enlace) {
+            var ruta = location.pathname;
+            var esInicio = enlace.pathname === '/';
+            var coincide = esInicio ? ruta === '/' : ruta.indexOf(enlace.pathname) === 0;
+            if (coincide) {
+                enlace.classList.add('activo');
+                enlace.setAttribute('aria-current', 'page');
+            }
+        });
+
+        // 2) Envuelve cada tabla en una "caja" que se desliza de costado si la tabla es muy ancha
+        document.querySelectorAll('main table').forEach(function (tabla) {
+            var caja = document.createElement('div');
+            caja.className = 'tabla-caja';
+            tabla.parentNode.insertBefore(caja, tabla);
+            caja.appendChild(tabla);
+        });
+
+        // 3) Tablas en el celular: copia el título de cada columna (th) en cada celda (td)
+        //    como atributo "data-label". El CSS lo usa para mostrar cada fila como una "cajita".
+        document.querySelectorAll('table').forEach(function (tabla) {
+            var titulos = Array.from(tabla.querySelectorAll('thead th')).map(function (th) {
+                return th.textContent.trim();
+            });
+            tabla.querySelectorAll('tbody tr').forEach(function (fila) {
+                Array.from(fila.children).forEach(function (celda, i) {
+                    celda.setAttribute('data-label', titulos[i] || '');
+                });
+            });
+        });
+    </script>
 </body>
 </html>

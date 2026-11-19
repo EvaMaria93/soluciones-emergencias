@@ -50,7 +50,7 @@ const urlBase = () =>
     (process.env.APP_URL || `http://localhost:${process.env.PORT || 3000}`).replace(/\/$/, '');
 
 const remitente = () =>
-    process.env.MAIL_FROM || '"Soluciones de Emergencia" <no-reply@soluciones-emergencias.test>';
+    process.env.MAIL_FROM || '"Manos a la Obra" <no-reply@manosalaobra.test>';
 
 // Envía un mail. Devuelve true si salió bien y false si no. NUNCA lanza error.
 const enviar = async ({ to, subject, text, replyTo }) => {

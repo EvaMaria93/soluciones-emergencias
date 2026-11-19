@@ -1,23 +1,114 @@
-<%# Pantalla de inicio de sesión. Recibe: error (texto o null) y email (para no perderlo si falló) %>
-<section>
-    <h1>Panel de administración</h1>
-    <p>Ingresá con tu cuenta de administrador.</p>
+<%# Pantalla de inicio de sesión. Recibe: error (texto o null) y email %>
+<section class="login-pantalla">
 
-    <% if (error) { %>
-        <p style="color: red;" role="alert"><%= error %></p>
-    <% } %>
+    <%# --- Columna izquierda: identidad visual y rubros de emergencia --- %>
+    <aside class="login-hero">
+        
+        <div class="login-hero__aro-superior" aria-hidden="true"></div>
 
-    <form action="/login" method="POST">
-        <div>
-            <label for="email">Email</label><br>
-            <input type="email" id="email" name="email" value="<%= email %>" required autofocus autocomplete="username">
+        <header class="login-marca">
+            <div class="login-marca__nombre">
+                <strong>Manos a la obra</strong>
+                <small>ADMIN</small>
+            </div>
+        </header>
+
+        <div class="login-hero__contenido">
+            <h1>Tu operación,<br>bajo control.</h1>
+            <p>
+                Gestioná solicitudes, coordiná profesionales y respondé
+                más rápido cuando cada minuto cuenta.
+            </p>
         </div>
-        <br>
-        <div>
-            <label for="password">Contraseña</label><br>
-            <input type="password" id="password" name="password" required autocomplete="current-password">
+
+        <%# --- Composición gráfica con herramientas y rubros (SVG) --- %>
+        <div class="login-escena" aria-hidden="true">
+            <div class="login-escena__sol"></div>
+
+            <%# Ilustración central: caja de herramientas + rayo eléctrico + casco %>
+            <svg class="login-escena__kit" viewBox="0 0 280 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <%# Rayo amarillo de emergencia %>
+                <path d="M132 18L102 82H128L116 132L158 66H130L132 18Z" fill="#FFD166" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+                <%# Llave combinada izquierda %>
+                <path d="M72 48L108 112" stroke="#E2E8F0" stroke-width="12" stroke-linecap="round"/>
+                <circle cx="68" cy="42" r="13" fill="#CBD5E1" stroke="#0A1F44" stroke-width="2.5"/>
+                <path d="M61 35L71 45" stroke="#064DB3" stroke-width="5" stroke-linecap="round"/>
+                <%# Destornillador naranja %>
+                <path d="M178 44L154 108" stroke="#94A3B8" stroke-width="6" stroke-linecap="round"/>
+                <rect x="171" y="26" width="16" height="30" rx="6" transform="rotate(20 171 26)" fill="#F28A1B" stroke="#0A1F44" stroke-width="2"/>
+                <%# Caja de herramientas azul %>
+                <path d="M112 104V92C112 88.7 114.7 86 118 86H158C161.3 86 164 88.7 164 92V104" stroke="#E2E8F0" stroke-width="6" stroke-linecap="round"/>
+                <rect x="84" y="104" width="108" height="68" rx="10" fill="#1E62C9" stroke="#FFFFFF" stroke-width="2.5"/>
+                <path d="M84 132H192" stroke="#0A1F44" stroke-width="2.5"/>
+                <%# Trabas naranjas de la caja %>
+                <rect x="108" y="124" width="12" height="16" rx="3" fill="#F28A1B" stroke="#0A1F44" stroke-width="2"/>
+                <rect x="156" y="124" width="12" height="16" rx="3" fill="#F28A1B" stroke="#0A1F44" stroke-width="2"/>
+                <%# Casco de seguridad amarillo/naranja abajo a la derecha %>
+                <path d="M174 174C174 152 191 136 212 136C233 136 250 152 250 174H174Z" fill="#F59E0B" stroke="#0A1F44" stroke-width="2.5"/>
+                <path d="M168 174H256" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+                <path d="M212 136V166" stroke="#FDE68A" stroke-width="3" stroke-linecap="round"/>
+            </svg>
         </div>
-        <br>
-        <button type="submit">Ingresar</button>
-    </form>
+
+        <footer class="login-hero__pie">
+            Plataforma de gestión.
+        </footer>
+    </aside>
+
+    <%# --- Columna derecha: formulario de acceso --- %>
+    <div class="login-panel">
+        <div class="login-caja">
+            <p class="login-caja__saludo">BIENVENIDO DE NUEVO</p>
+            <h2>Inicia sesión</h2>
+            <p class="login-caja__bajada">Ingresá tu mail y contraseña para acceder.</p>
+
+            <% if (error) { %>
+                <p class="login-error" role="alert"><%= error %></p>
+            <% } %>
+
+            <form action="/login" method="POST">
+                <div>
+                    <label for="email">Correo electrónico</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="<%= email %>"
+                        placeholder="nombre@gmail.com"
+                        required
+                        autofocus
+                        autocomplete="username"
+                    >
+                </div>
+
+                <div>
+                    <label for="password">Contraseña</label>
+                    <div class="campo-password">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Mínimo 8 caracteres"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <button
+                            type="button"
+                            class="campo-password__toggle"
+                            aria-label="Mostrar u ocultar contraseña"
+                            onclick="const i = document.getElementById('password'); i.type = i.type === 'password' ? 'text' : 'password';"
+                        >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit">Ingresar al panel →</button>
+            </form>
+        </div>
+    </div>
+
 </section>

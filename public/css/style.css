@@ -1,0 +1,1447 @@
+/* ==========================================================
+style.css  ->  Estilos de Soluciones de Emergencia
+==========================================================
+Paleta: blanco, azul y naranja.
+    - AZUL     = lo institucional: barra, enlaces, botones secundarios.
+    - NARANJA  = lo que requiere acción: botones principales, pendientes, la "emergencia".
+    - BLANCO   = las superficies de trabajo (tarjetas, tablas, formularios).
+
+Un bloque CSS se escribe así:   selector { propiedad: valor; }
+
+Índice:
+    1. Variables (colores y medidas)
+    2. Base
+    3. Barra superior y menú
+    4. Contenido y títulos
+    5. Enlaces que parecen botones y botones
+    6. Tablas (y su versión "cajitas" para celular)
+    7. Formularios y mensajes de error
+    8. Pantallas de detalle y de confirmación de borrado
+    9. Etiquetas de estado
+    10. Pantalla de login
+    11. Inicio: la mesa de guardia
+    12. Adaptación a pantallas chicas
+   ========================================================== */
+
+
+/* ----------------------------------------------------------
+1. VARIABLES
+Se declaran con "--nombre" y se usan con var(--nombre).
+Si querés cambiar un color de TODO el sitio, cambialo acá una sola vez.
+   ---------------------------------------------------------- */
+:root {
+    /* Azules */
+    --azul-950: #0a1f44;   /* títulos */
+    --azul-800: #123b7a;   /* barra superior */
+    --azul-600: #1e5aa8;   /* color principal */
+    --azul-200: #c9dcf6;
+    --azul-100: #e6eefa;
+    --azul-50:  #f3f7fc;
+
+    /* Naranjas */
+    --naranja-500: #f28a1b; /* botones principales */
+    --naranja-600: #d9730a;
+    --naranja-100: #fff0dc;
+    --naranja-900: #6b3500; /* texto sobre fondo naranja claro */
+
+    /* Neutros */
+    --blanco: #ffffff;
+    --fondo: #f5f8fc;
+    --linea: #d8e1ee;
+    --texto: #14233b;
+    --texto-suave: #52647f;
+
+    /* Estados con significado propio (peligro y éxito) */
+    --rojo: #b42318;
+    --rojo-oscuro: #8f1d14;
+    --rojo-fondo: #fdecea;
+    --verde: #18794e;
+    --verde-fondo: #e4f5ec;
+    --gris: #55607a;
+    --gris-fondo: #ebeef3;
+
+    --radio: 12px;          /* redondeo de esquinas */
+    --ancho-max: 1120px;    /* ancho máximo del contenido */
+    --sombra: 0 1px 2px rgba(10, 31, 68, 0.06), 0 4px 14px rgba(10, 31, 68, 0.06);
+}
+
+
+/* ----------------------------------------------------------
+2. BASE
+   ---------------------------------------------------------- */
+
+/* "border-box" hace que el padding y el borde NO agranden los elementos. */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.55;
+}
+
+h1, h2 {
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+    color: var(--azul-950);
+}
+
+h1 { font-size: clamp(1.6rem, 2.4vw + 1rem, 2.1rem); }
+h2 { font-size: 1.2rem; }
+
+a {
+    color: var(--azul-600);
+}
+
+/* Contorno bien visible para quien navega con el teclado */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--naranja-500);
+    outline-offset: 2px;
+}
+
+
+/* ----------------------------------------------------------
+3. BARRA SUPERIOR Y MENÚ
+   ---------------------------------------------------------- */
+.barra {
+    position: sticky;            /* se queda fija arriba al hacer scroll */
+    top: 0;
+    z-index: 10;
+    background: var(--azul-800);
+    border-bottom: 4px solid var(--naranja-500);
+}
+
+.barra__fila {
+    max-width: var(--ancho-max);
+    margin: 0 auto;
+    padding: 0.6rem 1.25rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+/* Logo + nombre */
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--blanco);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.1;
+}
+
+.marca small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: var(--azul-200);
+}
+
+.marca img {
+    border-radius: 9px;
+}
+
+/* Nombre del administrador + botón de cerrar sesión */
+.sesion {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+}
+
+.sesion__nombre {
+    color: var(--azul-200);
+    font-size: 0.9rem;
+}
+
+.sesion button {
+    background: transparent;
+    color: var(--blanco);
+    border: 1.5px solid rgba(255, 255, 255, 0.45);
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.sesion button:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--blanco);
+}
+
+/* Menú de secciones */
+.menu {
+    max-width: var(--ancho-max);
+    margin: 0 auto;
+    padding: 0.2rem 1.25rem 0;
+    display: flex;
+    gap: 0.25rem;
+    overflow-x: auto;            /* en celular se desliza de costado */
+    scrollbar-width: none;
+}
+
+.menu::-webkit-scrollbar {
+    display: none;
+}
+
+.menu a {
+    flex: 0 0 auto;
+    padding: 0.7rem 0.9rem;
+    color: var(--azul-200);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+}
+
+.menu a:hover {
+    color: var(--blanco);
+}
+
+.menu a.activo {
+    color: var(--blanco);
+    border-bottom-color: var(--naranja-500);   /* subrayado naranja en la sección actual */
+}
+
+
+/* ----------------------------------------------------------
+4. CONTENIDO Y TÍTULOS
+   ---------------------------------------------------------- */
+.contenedor {
+    max-width: var(--ancho-max);
+    margin: 0 auto;
+    padding: 1.75rem 1.25rem 3rem;
+}
+
+main section > h1 {
+    margin-bottom: 0.75rem;
+}
+
+
+/* ----------------------------------------------------------
+   5. ENLACES QUE PARECEN BOTONES Y BOTONES
+   ----------------------------------------------------------
+   Tus vistas escriben las acciones así:  <a>Ver</a> | <a>Editar</a> | <a>Eliminar</a>
+   Con "font-size: 0" en el contenedor desaparecen las barritas "|" y cada enlace
+   se convierte en un botón. Se distinguen por el final de su dirección:
+     termina en /create  -> botón naranja
+     termina en /edit    -> botón azul
+     termina en /delete  -> botón rojo suave
+   ---------------------------------------------------------- */
+
+/* Barras de acciones: cualquier <p> que tiene enlaces como hijos directos */
+main p:has(> a) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin: 0 0 1.25rem;
+    font-size: 0;
+}
+
+/* Enlace "botón" base (blanco con borde) */
+main p:has(> a) > a,
+main td:last-child a {
+    display: inline-block;
+    padding: 0.55rem 1rem;
+    border: 1.5px solid var(--linea);
+    border-radius: 999px;
+    background: var(--blanco);
+    color: var(--azul-950);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: background-color 0.15s, border-color 0.15s;
+}
+
+main p:has(> a) > a:hover,
+main td:last-child a:hover {
+    border-color: var(--azul-600);
+    background: var(--azul-50);
+}
+
+/* Crear: el botón principal, en naranja */
+main a[href$="/create"] {
+    background: var(--naranja-500) !important;
+    border-color: var(--naranja-500) !important;
+    color: var(--azul-950) !important;
+}
+
+main a[href$="/create"]:hover {
+    background: var(--naranja-600) !important;
+    border-color: var(--naranja-600) !important;
+}
+
+/* Editar: azul */
+main a[href$="/edit"] {
+    background: var(--azul-600) !important;
+    border-color: var(--azul-600) !important;
+    color: var(--blanco) !important;
+}
+
+main a[href$="/edit"]:hover {
+    background: var(--azul-800) !important;
+    border-color: var(--azul-800) !important;
+}
+
+/* Eliminar: rojo suave (no llama la atención hasta que se lo busca) */
+main a[href$="/delete"] {
+    background: var(--blanco) !important;
+    border-color: #e8b9b4 !important;
+    color: var(--rojo) !important;
+}
+
+main a[href$="/delete"]:hover {
+    background: var(--rojo-fondo) !important;
+    border-color: var(--rojo) !important;
+}
+
+/* Botones de formulario (Guardar, Ingresar...): naranja */
+main button[type="submit"] {
+    padding: 0.7rem 1.4rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--naranja-500);
+    color: var(--azul-950);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+main button[type="submit"]:hover {
+    background: var(--naranja-600);
+}
+
+/* "Cancelar" y otros enlaces dentro de un formulario: botón con borde */
+main form a {
+    display: inline-block;
+    padding: 0.65rem 1.2rem;
+    border: 1.5px solid var(--linea);
+    border-radius: 999px;
+    background: var(--blanco);
+    color: var(--azul-950);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+main form a:hover {
+    border-color: var(--azul-600);
+    background: var(--azul-50);
+}
+
+
+/* ----------------------------------------------------------
+6. TABLAS
+   ---------------------------------------------------------- */
+/* El script del layout envuelve cada tabla en una "caja": si la tabla es más ancha que la
+   pantalla, la caja se desliza de costado en lugar de romper el diseño. */
+.tabla-caja {
+    overflow-x: auto;
+    background: var(--blanco);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+main table {
+    width: 100%;
+    border: 0;
+    border-collapse: collapse;
+    background: var(--blanco);
+    font-size: 0.95rem;
+}
+
+main th,
+main td {
+    padding: 0.8rem 0.75rem;
+    text-align: left;
+    vertical-align: middle;
+    border: 0;
+    border-bottom: 1px solid var(--linea);
+}
+
+main thead th {
+    background: var(--azul-50);
+    color: var(--texto-suave);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+main tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+main tbody tr:hover {
+    background: var(--azul-50);
+}
+
+/* La última columna (Acciones): botones chicos, alineados a la derecha */
+main td:last-child {
+    text-align: right;
+    white-space: nowrap;
+    font-size: 0;                  /* oculta las barritas "|" entre enlaces */
+}
+
+main td:last-child a {
+    margin-left: 0.35rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+}
+
+/* Si no hay datos: un aviso simple */
+main section > p:not(:has(> a)):not(:has(> strong)) {
+    color: var(--texto-suave);
+}
+
+
+/* ----------------------------------------------------------
+7. FORMULARIOS Y MENSAJES DE ERROR
+   ---------------------------------------------------------- */
+
+/* El formulario es una tarjeta blanca. Los campos (cada <div>) se acomodan solos:
+   de a dos por fila en pantallas grandes y de a uno en el celular. */
+main section > form:not([action*="DELETE"]) {
+    max-width: 780px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1rem;
+    padding: 1.5rem;
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+main form br {
+    display: none;                 /* los <br> del HTML ya no hacen falta */
+}
+
+/* Cada campo ocupa una fila entera... */
+main form > div {
+    flex: 1 1 100%;
+}
+
+/* ...salvo estos pares de campos que van lado a lado (categoría y zona, profesional y
+   presupuesto, email y teléfono). Están uno al lado del otro en el HTML, así que se juntan solos. */
+main form > div:has(:is(#category_id, #zone_id, #professional_id, #budget, #email, #phone)) {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 220px;
+}
+
+main label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--azul-950);
+}
+
+main input[type="text"],
+main input[type="email"],
+main input[type="tel"],
+main input[type="password"],
+main input[type="number"],
+main select,
+main textarea {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    border: 1.5px solid #b7c4d8;
+    border-radius: 10px;
+    background: var(--blanco);
+    color: var(--texto);
+    font: inherit;
+}
+
+main input:focus,
+main select:focus,
+main textarea:focus {
+    border-color: var(--azul-600);
+}
+
+main textarea {
+    resize: vertical;
+}
+
+/* Los botones del formulario (Guardar / Cancelar) van abajo, en una fila */
+main form > button,
+main form > a {
+    align-self: center;
+    margin-top: 0.4rem;
+}
+
+/* Mensaje de error. Tus vistas lo escriben con style="color: red", por eso hace falta
+   el !important: para pisar ese estilo y darle el diseño de aviso. */
+main p[style*="red"] {
+    max-width: 780px;
+    margin: 0 0 1rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid #efb6b0;
+    border-left: 6px solid var(--rojo);
+    border-radius: 10px;
+    background: var(--rojo-fondo);
+    color: var(--rojo-oscuro) !important;
+    font-weight: 600;
+}
+
+
+/* ----------------------------------------------------------
+8. PANTALLAS DE DETALLE Y DE CONFIRMACIÓN DE BORRADO
+   ---------------------------------------------------------- */
+
+/* Detalle: cada línea "Dato: valor" es una cajita blanca */
+main section:not(:has(form)):not(:has(> a)) > p:has(> strong:first-child) {
+    max-width: 780px;
+    margin: 0 0 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: 10px;
+    overflow-wrap: anywhere;
+}
+
+main section:not(:has(form)):not(:has(> a)) > p:has(> strong:first-child) {
+    display: grid;
+    grid-template-columns: 14rem 1fr;   /* columna del título + columna del dato */
+    gap: 0.25rem 1rem;
+    align-items: baseline;
+}
+
+main section:not(:has(form)):not(:has(> a)) > p > strong:first-child {
+    color: var(--texto-suave);
+    font-weight: 600;
+}
+
+/* Barra de acciones que viene después de los datos: un poco de aire arriba */
+main section > p:has(> strong) ~ p:has(> a) {
+    margin-top: 1.25rem;
+}
+
+/* Los separadores <hr> pasan a ser un espacio entre grupos de datos */
+main hr {
+    height: 0.9rem;
+    margin: 0;
+    border: 0;
+}
+
+/* Confirmación de borrado: una tarjeta con franja roja arriba, para que se note que es delicado */
+main section:has(> form[action*="DELETE"]) {
+    max-width: 640px;
+    padding: 1.5rem;
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-top: 6px solid var(--rojo);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+main section:has(> form[action*="DELETE"]) > p {
+    font-size: 1.1rem;
+}
+
+main form[action*="DELETE"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+}
+
+/* El botón que borra de verdad: rojo y con texto blanco */
+main form[action*="DELETE"] button[type="submit"] {
+    background: var(--rojo);
+    color: var(--blanco);
+}
+
+main form[action*="DELETE"] button[type="submit"]:hover {
+    background: var(--rojo-oscuro);
+}
+
+main form[action*="DELETE"] > a {
+    margin-top: 0;
+}
+
+
+/* Pantallas de error (400, 404 y 500): una tarjeta con el código, el motivo y un botón para volver */
+main section:has(> p:first-child > strong:only-child):has(> a) {
+    max-width: 560px;
+    padding: 2rem;
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-top: 6px solid var(--naranja-500);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+main section > p:first-child:has(> strong:only-child) {
+    margin: 0 0 0.4rem;
+    color: var(--naranja-600);
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+main section > a {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.65rem 1.3rem;
+    border-radius: 999px;
+    background: var(--azul-600);
+    color: var(--blanco);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+main section > a:hover {
+    background: var(--azul-800);
+}
+
+
+/* ----------------------------------------------------------
+9. ETIQUETAS DE ESTADO
+Cada estado de una solicitud tiene su color:
+naranja = espera, azules = en marcha, verde = terminada, gris = cancelada.
+   ---------------------------------------------------------- */
+.estado {
+    display: inline-block;
+    justify-self: start;           /* en el detalle (grilla) no se estira a todo el ancho */
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: capitalize;    /* "en proceso" -> "En proceso" */
+    white-space: nowrap;
+}
+
+.estado--pendiente     { background: var(--naranja-100); color: var(--naranja-900); }
+.estado--presupuestada { background: var(--azul-100);    color: var(--azul-800); }
+.estado--asignada      { background: var(--azul-200);    color: var(--azul-950); }
+.estado--en_proceso    { background: var(--azul-800);    color: var(--blanco); }
+.estado--finalizada    { background: var(--verde-fondo); color: var(--verde); }
+.estado--cancelada     { background: var(--gris-fondo);  color: var(--gris); }
+
+
+
+/* ----------------------------------------------------------
+10. PANTALLA DE LOGIN (body con la clase "sin-sesion")
+Diseño dividido: panel institucional azul a la izquierda +
+formulario limpio a la derecha.
+   ---------------------------------------------------------- */
+body.sin-sesion {
+    background: #f6f8fb;
+}
+
+/* Ocultamos el encabezado centrado anterior sin tocar layouts.ejs */
+body.sin-sesion .marca-centro {
+    display: none;
+}
+
+body.sin-sesion .contenedor {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+.login-pantalla {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    min-height: 100vh;
+}
+
+/* --- Panel izquierdo (Azul institucional + herramientas) --- */
+.login-hero {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2.5rem 3.25rem;
+    background: linear-gradient(155deg, #0753c4 0%, #053e99 60%, #042f78 100%);
+    color: var(--blanco);
+}
+
+/* Cuadrícula técnica sutil de fondo */
+.login-hero__grilla {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 36px 36px;
+    pointer-events: none;
+}
+
+/* Aro decorativo translúcido arriba a la izquierda */
+.login-hero__aro-superior {
+    position: absolute;
+    top: -70px;
+    left: -70px;
+    width: 240px;
+    height: 240px;
+    border: 26px solid rgba(255, 255, 255, 0.06);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Marca superior izquierda ("SE Soluciones EMERGENCIA") */
+.login-marca {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.login-marca__insignia {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: var(--blanco);
+    color: #064db3;
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+}
+
+.login-marca__nombre {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+}
+
+.login-marca__nombre strong {
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.login-marca__nombre small {
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    opacity: 0.85;
+}
+
+/* Texto principal del hero */
+.login-hero__contenido {
+    position: relative;
+    z-index: 2;
+    max-width: 460px;
+    margin: 2rem 0;
+}
+
+.login-hero__badge {
+    display: inline-grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 1.25rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.login-hero__contenido h1 {
+    margin: 0 0 1rem;
+    color: var(--blanco);
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+}
+
+.login-hero__contenido p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 1.02rem;
+    line-height: 1.6;
+}
+
+/* Escena gráfica inferior derecha (arco naranja + burbujas de rubros + kit) */
+.login-escena {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 390px;
+    height: 360px;
+    pointer-events: none;
+}
+
+.login-escena__sol {
+    position: absolute;
+    right: -65px;
+    bottom: -85px;
+    width: 310px;
+    height: 310px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ff9326, var(--naranja-500));
+    box-shadow: inset 0 0 0 28px rgba(255, 255, 255, 0.1);
+}
+
+.login-escena__kit {
+    position: absolute;
+    right: 18px;
+    bottom: 8px;
+    width: 265px;
+    height: auto;
+    filter: drop-shadow(0 12px 20px rgba(4, 24, 64, 0.35));
+}
+
+/* Burbujas flotantes con íconos de cada especialidad */
+.rubro-burbuja {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1.5px solid rgba(255, 255, 255, 0.28);
+    color: var(--blanco);
+    backdrop-filter: blur(4px);
+}
+
+.rubro-burbuja--plomeria   { top: 12px;  right: 175px; }
+.rubro-burbuja--llave      { top: 44px;  right: 98px; }
+.rubro-burbuja--cerrajeria { top: 122px; right: 42px; }
+.rubro-burbuja--gas        { bottom: 38px; left: 26px; }
+
+.login-hero__pie {
+    position: relative;
+    z-index: 2;
+    font-size: 0.84rem;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+/* --- Panel derecho (Formulario de inicio de sesión) --- */
+.login-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 2rem;
+    background: #f6f8fb;
+}
+
+.login-caja {
+    width: 100%;
+    max-width: 390px;
+}
+
+.login-caja__saludo {
+    margin: 0 0 0.45rem;
+    color: var(--naranja-500);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.login-caja h2 {
+    margin: 0 0 0.4rem;
+    color: var(--azul-950);
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.login-caja__bajada {
+    margin: 0 0 1.75rem;
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+}
+
+/* Reseteamos estilos genéricos de formularios internos para que quede limpio */
+body.sin-sesion .login-caja form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    max-width: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+body.sin-sesion .login-caja form > div {
+    flex: 1 1 auto !important;
+    min-width: 0;
+}
+
+body.sin-sesion .login-caja label {
+    margin-bottom: 0.4rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--azul-950);
+}
+
+body.sin-sesion .login-caja input[type="email"],
+body.sin-sesion .login-caja input[type="password"],
+body.sin-sesion .login-caja input[type="text"] {
+    width: 100%;
+    padding: 0.78rem 0.95rem;
+    border: 1.5px solid #dce3ee;
+    border-radius: 10px;
+    background: var(--blanco);
+    font-size: 0.95rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+body.sin-sesion .login-caja input::placeholder {
+    color: #9aa7bc;
+}
+
+body.sin-sesion .login-caja input:focus {
+    outline: none;
+    border-color: #064db3;
+    box-shadow: 0 0 0 3px rgba(6, 77, 179, 0.14);
+}
+
+/* Campo de contraseña con botón de mostrar/ocultar */
+.campo-password {
+    position: relative;
+}
+
+.campo-password input {
+    padding-right: 2.75rem !important;
+}
+
+.campo-password__toggle {
+    position: absolute;
+    top: 50%;
+    right: 0.7rem;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    padding: 0.25rem;
+    border: 0;
+    background: transparent;
+    color: #8b99b0;
+    cursor: pointer;
+}
+
+.campo-password__toggle:hover {
+    color: var(--azul-950);
+}
+
+/* Botón principal azul ("Ingresar al panel ->") */
+body.sin-sesion .login-caja button[type="submit"] {
+    width: 100%;
+    margin-top: 0.4rem;
+    padding: 0.85rem 1.25rem;
+    border: 0;
+    border-radius: 10px;
+    background: #064db3;
+    color: var(--blanco);
+    font-size: 0.98rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(6, 77, 179, 0.22);
+    transition: background-color 0.15s, transform 0.1s;
+}
+
+body.sin-sesion .login-caja button[type="submit"]:hover {
+    background: #053e99;
+}
+
+body.sin-sesion .login-caja button[type="submit"]:active {
+    transform: translateY(1px);
+}
+
+/* Mensaje de error cuando fallan las credenciales */
+body.sin-sesion .login-error {
+    margin: 0 0 1.1rem;
+    padding: 0.75rem 0.95rem;
+    border: 1px solid #efb6b0;
+    border-left: 5px solid var(--rojo);
+    border-radius: 10px;
+    background: var(--rojo-fondo);
+    color: var(--rojo-oscuro);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Adaptación a pantallas medianas y celulares */
+@media (max-width: 900px) {
+    .login-pantalla {
+        grid-template-columns: 1fr;
+    }
+
+    .login-hero {
+        padding: 2rem 1.5rem 2.25rem;
+        min-height: auto;
+    }
+
+    .login-hero__contenido {
+        margin: 1.5rem 0 0;
+    }
+
+    .login-escena,
+    .login-hero__pie {
+        display: none;
+    }
+
+    .login-panel {
+        padding: 2.25rem 1.5rem 3rem;
+    }
+}
+
+/* ----------------------------------------------------------
+11. INICIO: LA MESA DE GUARDIA
+No es un panel de números sueltos: cuenta el recorrido de una solicitud
+y muestra quién está esperando que lo atiendan.
+   ---------------------------------------------------------- */
+
+/* Portada */
+.guardia {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+    padding: 1.75rem 2rem;
+    background: var(--azul-800);
+    border-radius: 18px;
+    color: var(--blanco);
+    box-shadow: var(--sombra);
+}
+
+.guardia h1 {
+    margin: 0;
+    color: var(--blanco);
+    font-size: clamp(1.7rem, 3vw + 1rem, 2.4rem);
+}
+
+.guardia__etiqueta {
+    margin: 0 0 0.35rem;
+    color: var(--naranja-500);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.guardia__fecha {
+    margin: 0.2rem 0 0;
+    color: var(--azul-200);
+}
+
+.guardia__fecha::first-letter {
+    text-transform: uppercase;     /* "martes" -> "Martes" (sin tocar el resto) */
+}
+
+.guardia__boton {
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    background: var(--naranja-500);
+    color: var(--azul-950);
+    font-size: 1.05rem;
+    font-weight: 800;
+    text-decoration: none;
+    transition: background-color 0.15s;
+}
+
+.guardia__boton:hover {
+    background: var(--naranja-600);
+}
+
+/* Bloques de contenido del inicio */
+.bloque {
+    margin-bottom: 2rem;
+}
+
+.bloque h2 {
+    margin-bottom: 0.9rem;
+}
+
+.bloque__nota {
+    margin: 0.9rem 0 0;
+    color: var(--texto-suave);
+    font-size: 0.92rem;
+}
+
+/* El recorrido: 5 pasos unidos por una línea */
+.recorrido {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.paso {
+    position: relative;
+}
+
+/* La línea que une un paso con el siguiente */
+.paso:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 2.1rem;
+    left: 50%;
+    width: 100%;
+    height: 4px;
+    background: var(--azul-200);
+    z-index: 0;
+}
+
+.paso a {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 0.4rem;
+    color: var(--texto);
+    text-decoration: none;
+}
+
+.paso__numero {
+    display: grid;
+    place-items: center;
+    width: 4.2rem;
+    height: 4.2rem;
+    border: 4px solid var(--fondo);       /* el borde del color del fondo "corta" la línea */
+    border-radius: 50%;
+    background: var(--azul-600);
+    color: var(--blanco);
+    font-size: 1.6rem;
+    font-weight: 800;
+    box-shadow: var(--sombra);
+    transition: transform 0.15s;
+}
+
+.paso a:hover .paso__numero {
+    transform: translateY(-2px);
+}
+
+.paso__titulo {
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.paso--pendiente .paso__numero  { background: var(--naranja-500); color: var(--azul-950); }
+.paso--finalizada .paso__numero { background: var(--verde); }
+.paso--en_proceso .paso__numero { background: var(--azul-800); }
+
+/* Cola de espera: una tarjeta por solicitud pendiente */
+.cola {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 1rem;
+}
+
+.urgencia {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.1rem 1.2rem;
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-left: 6px solid var(--naranja-500);   /* la franja naranja = "esperando" */
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+.urgencia__cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    color: var(--azul-950);
+    font-size: 1.1rem;
+}
+
+.urgencia__hace {
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    background: var(--naranja-100);
+    color: var(--naranja-900);
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.urgencia p {
+    margin: 0;
+    font-size: 0.93rem;
+}
+
+.urgencia__cliente {
+    color: var(--texto-suave);
+}
+
+.urgencia__boton {
+    align-self: flex-start;
+    margin-top: 0.7rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    background: var(--azul-600);
+    color: var(--blanco);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.urgencia__boton:hover {
+    background: var(--azul-800);
+}
+
+.todo-al-dia {
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    background: var(--verde-fondo);
+    border-radius: var(--radio);
+    color: var(--verde);
+    font-weight: 700;
+}
+
+/* Accesos a los datos que se cargan */
+.accesos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.9rem;
+}
+
+.acceso {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1rem 1.2rem;
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    color: var(--texto);
+    font-weight: 600;
+    line-height: 1.25;
+    text-decoration: none;
+    transition: border-color 0.15s, transform 0.15s;
+}
+
+.acceso:hover {
+    border-color: var(--azul-600);
+    transform: translateY(-2px);
+}
+
+.acceso small {
+    color: var(--texto-suave);
+    font-weight: 400;
+}
+
+.acceso__numero {
+    min-width: 2.6rem;
+    color: var(--azul-600);
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+
+/* Tablas como "cajitas": se activan desde 980px (tablets y celulares), porque si no
+   los botones de acción de la tabla quedarían escondidos fuera de la pantalla. */
+@media (max-width: 980px) {
+
+    /* --- TABLAS COMO "CAJITAS" ---------------------------------------
+    Cada fila de la tabla pasa a ser una tarjeta. En cada dato se muestra
+       el título de su columna (data-label, que agrega el script del layout). */
+    main table,
+    main tbody,
+    main tr,
+    main td {
+        display: block;
+    }
+
+    main table {
+        background: transparent;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    /* El encabezado se oculta a la vista, pero sigue disponible para lectores de pantalla */
+    main thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+    }
+
+    main tbody tr {
+        margin-bottom: 0.9rem;
+        padding: 0.35rem 1rem 0.9rem;
+        background: var(--blanco);
+        border: 1px solid var(--linea);
+        border-radius: var(--radio);
+        box-shadow: var(--sombra);
+    }
+
+    main td {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--azul-50);
+        text-align: right;
+        font-size: 0.95rem;
+    }
+
+    main td::before {
+        content: attr(data-label);       /* el título de la columna */
+        flex: 0 0 38%;
+        color: var(--texto-suave);
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-align: left;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    /* La última celda (acciones) ocupa todo el ancho, con los botones abajo */
+    main td:last-child {
+        display: block;
+        margin-top: 0.4rem;
+        padding-top: 0.8rem;
+        border-bottom: 0;
+        text-align: left;
+        font-size: 0;
+        white-space: normal;
+    }
+
+    main td:last-child::before {
+        display: none;
+    }
+
+    main td:last-child a {
+        margin: 0 0.4rem 0.4rem 0;
+        padding: 0.5rem 0.95rem;
+        font-size: 0.9rem;
+    }
+
+    /* La caja de la tabla ya no hace falta: cada fila es su propia tarjeta */
+    .tabla-caja {
+        overflow: visible;
+        background: transparent;
+        border-radius: 0;
+        box-shadow: none;
+    }
+}
+
+
+/* ----------------------------------------------------------
+12. ADAPTACIÓN A PANTALLAS CHICAS (responsive)
+Un "media query" aplica estas reglas SOLO si la pantalla mide 760px o menos
+(las tablas ya pasaron a "cajitas" un poco antes, a los 980px).
+   ---------------------------------------------------------- */
+@media (max-width: 760px) {
+
+    .contenedor {
+        padding: 1.25rem 1rem 2.5rem;
+    }
+
+    /* Barra: el nombre del administrador se esconde para que entre el botón */
+    .sesion__nombre {
+        display: none;
+    }
+
+    /* Detalle: el título y el dato se apilan */
+    main section:not(:has(form)):not(:has(> a)) > p:has(> strong:first-child) {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    main section:not(:has(form)):not(:has(> a)) > p > strong:first-child {
+        font-size: 0.8rem;
+    }
+
+    /* Formularios: un campo por fila y botones a lo ancho */
+    main form > div,
+    main form > div:has(:is(#category_id, #zone_id, #professional_id, #budget, #email, #phone)) {
+        flex: 1 1 100% !important;
+    }
+
+    main section > form:not([action*="DELETE"]) {
+        padding: 1.1rem;
+    }
+
+    main form > button[type="submit"] {
+        flex: 1 1 100%;
+    }
+
+    main form > a {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    /* Inicio */
+    .guardia {
+        padding: 1.4rem 1.25rem;
+    }
+
+    .guardia__boton {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* El recorrido pasa de horizontal a vertical */
+    .recorrido {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .paso:not(:last-child)::after {
+        display: none;
+    }
+
+    .paso a {
+        flex-direction: row;
+        gap: 1rem;
+        padding: 0.6rem 0.9rem;
+        background: var(--blanco);
+        border: 1px solid var(--linea);
+        border-radius: var(--radio);
+    }
+
+    .paso__numero {
+        width: 3rem;
+        height: 3rem;
+        border-width: 0;
+        font-size: 1.3rem;
+        box-shadow: none;
+    }
+
+    .paso__titulo {
+        text-align: left;
+        font-size: 1rem;
+    }
+
+    .cola {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Si la persona pidió reducir las animaciones en su sistema, las apagamos */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}

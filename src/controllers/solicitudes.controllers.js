@@ -133,7 +133,7 @@ const store = async (req, res) => {
 
         // El aviso por mail se manda DESPUÉS de responder y sin "await": no demora la pantalla
         // y, si el correo falla, la solicitud igual quedó guardada.
-        Mail.avisarNuevaSolicitud(nuevoId, req.session.admin.email);
+        Mail.avisarNuevaSolicitud(nuevoId, req.session?.admin?.email);
     } catch (error) {
         if (error.code === 'ER_NO_REFERENCED_ROW_2') {
             return badRequest(res, 'El cliente, la categoría, la zona o el profesional elegido no existe.', '/solicitudes', 'Volver a solicitudes');
@@ -213,7 +213,7 @@ const update = async (req, res) => {
         // Avisos por mail según el nuevo estado (solo si el estado cambió)
         if (anterior && anterior.status !== status) {
             if (status === 'presupuestada') {
-                Mail.avisarPresupuesto(id, req.session.admin.email); // -> cliente
+                Mail.avisarPresupuesto(id, req.session?.admin?.email); // -> cliente
             } else if (status === 'asignada') {
                 Mail.avisarAsignacion(id); // -> profesional
             }

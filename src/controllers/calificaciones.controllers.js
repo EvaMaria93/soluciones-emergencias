@@ -62,15 +62,26 @@ const store = async (req, res) => {
     }
 
     try {
-        // Regla: solo se califican solicitudes finalizadas
         const solicitud = await Solicitud.getById(request_id);
-        if (solicitud && solicitud.status !== 'finalizada') {
+
+        // 1. Verificamos que la solicitud exista
+        if (!solicitud) {
             return res.status(400).render('calificaciones/create', {
-                error: 'Solo se pueden calificar solicitudes finalizadas.',
-                calificacion: { request_id, score, comment },
+                error: 'La solicitud elegida no existe.',
+                calificacion: { request_id, score: req.body.score, comment },
                 solicitudes: await solicitudesCalificables()
             });
         }
+
+        // 2. Verificamos que esté finalizada
+        if (solicitud.status !== 'finalizada') {
+            return res.status(400).render('calificaciones/create', {
+                error: 'Solo se pueden calificar solicitudes finalizadas.',
+                calificacion: { request_id, score: req.body.score, comment },
+                solicitudes: await solicitudesCalificables()
+            });
+        }
+
         await Calificacion.create({ request_id, score, comment });
         res.redirect('/calificaciones');
     } catch (error) {
@@ -125,17 +136,27 @@ const update = async (req, res) => {
     }
 
     try {
-        // Regla: solo se califican solicitudes finalizadas
         const solicitud = await Solicitud.getById(request_id);
-        if (solicitud && solicitud.status !== 'finalizada') {
+
+        // 1. Verificamos que la solicitud exista
+        if (!solicitud) {
             return res.status(400).render('calificaciones/edit', {
-                calificacion: { id, request_id, score, comment },
+                calificacion: { id, request_id, score: req.body.score, comment },
+                solicitudes: await solicitudesCalificables(),
+                error: 'La solicitud elegida no existe.'
+            });
+        }
+
+        // 2. Verificamos que esté finalizada
+        if (solicitud.status !== 'finalizada') {
+            return res.status(400).render('calificaciones/edit', {
+                calificacion: { id, request_id, score: req.body.score, comment },
                 solicitudes: await solicitudesCalificables(),
                 error: 'Solo se pueden calificar solicitudes finalizadas.'
             });
         }
+
         const filas = await Calificacion.update(id, { request_id, score, comment });
-        // Si no se modificó ninguna fila, ese id no existe
         if (filas === 0) {
             return notFound(res, 'Calificación no encontrada', '/calificaciones', 'Volver a calificaciones');
         }
@@ -171,7 +192,6 @@ const deleteForm = async (req, res) => {
 const destroy = async (req, res) => {
     try {
         const filas = await Calificacion.remove(req.params.id);
-        // Si no se modificó ninguna fila, ese id no existe
         if (filas === 0) {
             return notFound(res, 'Calificación no encontrada', '/calificaciones', 'Volver a calificaciones');
         }

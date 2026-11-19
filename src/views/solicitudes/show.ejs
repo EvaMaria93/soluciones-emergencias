@@ -1,7 +1,7 @@
 <section>
     <h1>Detalle de Solicitud #<%= solicitud.id %></h1>
 
-    <p><strong>Estado:</strong> <%= solicitud.status %></p>
+    <p><strong>Estado:</strong> <span class="estado estado--<%= solicitud.status %>"><%= solicitud.status.replace('_', ' ') %></span></p>
     <p><strong>Fecha de creación:</strong> <%= solicitud.created_at ? new Date(solicitud.created_at).toLocaleString('es-AR') : '-' %></p>
     <hr>
     <p><strong>Cliente:</strong> <%= solicitud.user_name %> (Tel: <%= solicitud.user_phone %> | Email: <%= solicitud.user_email %>)</p>
@@ -11,7 +11,7 @@
     <p><strong>Descripción del problema:</strong> <%= solicitud.description %></p>
     <hr>
     <p><strong>Profesional asignado:</strong> <%= solicitud.professional_name ? `${solicitud.professional_name} (Tel: ${solicitud.professional_phone})` : 'Pendiente de asignación' %></p>
-    <p><strong>Presupuesto:</strong> <%= solicitud.budget ? '$' + solicitud.budget : 'A definir' %></p>
+    <p><strong>Presupuesto:</strong> <%= solicitud.budget !== null && solicitud.budget !== undefined ? '$ ' + Number(solicitud.budget).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 'A definir' %></p>
 
     <p>
         <a href="/solicitudes/<%= solicitud.id %>/edit">Editar / Asignar técnico</a> |
